@@ -33,7 +33,7 @@ const Sidebar = () => {
       {/* Mobile Sidebar Toggle */}
       <button
         onClick={toggleMobileSidebar}
-        className="md:hidden fixed bottom-4 left-4 z-50 bg-black rounded p-2"
+        className="md:hidden fixed bottom-4 left-4 z-50 text-black focus:outline-none rounded p-2"
       >
         {isMobileSidebarOpen ? <Close color="white" /> : <Menu color="white" />}
       </button>
@@ -61,7 +61,7 @@ const Sidebar = () => {
       )}
 
       {/* Desktop Sidebar */}
-      <div className="hidden md:block bg-gray-200 h-screen z-10 w-full overflow-y-auto">
+      <div className="hidden md:block bg-primary h-screen z-10 w-full overflow-y-auto">
         <SidebarContent
           items={sidebarItems}
           expandedSection={expandedSection}

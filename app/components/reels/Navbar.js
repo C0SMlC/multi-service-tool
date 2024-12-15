@@ -33,7 +33,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-secondary py-6 px-6 flex justify-between items-center relative z-50">
+    <nav className="bg-primary py-6 px-6 flex justify-between items-center relative z-50">
       <div className="flex items-center">
         <img
           src="https://via.placeholder.com/32x32?text=Logo"
@@ -77,16 +77,16 @@ const Navbar = () => {
       >
         {isMenuOpen && (
           <>
-            <div className="absolute top-6 right-6">
+            {/* <div className="absolute top-6 right-6">
               <button
                 onClick={toggleMenu}
                 className="text-white focus:outline-none"
               >
                 <Close fontSize="large" />
               </button>
-            </div>
+            </div> */}
 
-            <div className="flex flex-col items-center justify-center space-y-8">
+            <div className="flex flex-col items-center justify-center space-y-8 mt-32">
               {["Nav Item 1", "Nav Item 2", "Nav Item 3", "Nav Item 4"].map(
                 (item, index) => (
                   <a

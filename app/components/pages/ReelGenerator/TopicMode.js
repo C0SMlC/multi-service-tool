@@ -58,7 +58,7 @@ export const TopicMode = () => {
           value={textInput}
           onChange={(e) => setTextInput(e.target.value)}
           placeholder="Enter optional text"
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border bg-lightGrey"
         />
       </div>
 
