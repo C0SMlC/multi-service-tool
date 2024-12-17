@@ -8,15 +8,15 @@ export const sidebarItems = [
     subItems: [
       {
         name: "Reels",
-        subTools: ["Connection", "Monitoring", "Logs"],
+        subTools: ["Generate", "Monitoring", "Logs"],
       },
       {
         name: "None1",
-        subTools: ["Subtool 1", "Subtool 2"],
+        subTools: ["Subtool-1", "Subtool-2"],
       },
       {
         name: "None2",
-        subTools: ["Subtool A", "Subtool B"],
+        subTools: ["Subtool-A", "Subtool-B"],
       },
     ],
   },

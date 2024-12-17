@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import ToolItem from "./ToolItem";
 
@@ -8,7 +9,16 @@ const SidebarSection = ({
   selectedTool,
   onToggleSection,
   onToggleTool,
+  currentPath,
 }) => {
+  const router = useRouter();
+
+  const handleDashboardItemClick = (item) => {
+    // Convert item to a route-friendly format
+    const routePath = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+    router.push(routePath);
+  };
+
   return (
     <div className="mb-4 mt-12">
       {/* Section Header */}
@@ -32,7 +42,14 @@ const SidebarSection = ({
               section.subItems.map((item, itemIndex) => (
                 <div
                   key={itemIndex}
-                  className="text-gray-700 hover:bg-gray-100 p-2 rounded transition-colors"
+                  onClick={() => handleDashboardItemClick(item)}
+                  className={`text-gray-700 hover:bg-gray-100 p-2 rounded transition-colors cursor-pointer ${
+                    currentPath.includes(
+                      item.toLowerCase().replace(/\s+/g, "-")
+                    )
+                      ? "bg-blue-100 font-semibold"
+                      : ""
+                  }`}
                 >
                   {item}
                 </div>
@@ -44,6 +61,7 @@ const SidebarSection = ({
                   tool={tool}
                   isExpanded={selectedTool === tool.name}
                   onToggle={() => onToggleTool(tool.name)}
+                  currentPath={currentPath}
                 />
               ))}
         </div>

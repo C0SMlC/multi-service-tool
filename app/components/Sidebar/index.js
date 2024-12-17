@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, Close } from "@mui/icons-material";
 import SidebarContent from "./SidebarContent";
 import { sidebarItems } from "./SidebarData";
 
 const Sidebar = () => {
+  const pathname = usePathname();
   const [expandedSection, setExpandedSection] = useState({
     Dashboard: true,
     Tools: true,
@@ -12,6 +14,39 @@ const Sidebar = () => {
 
   const [selectedTool, setSelectedTool] = useState(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    // Reset expanded sections
+    const newExpandedSection = { Dashboard: true, Tools: true };
+    let toolToSelect = null;
+
+    // Iterate through sidebar items to find matching route
+    sidebarItems.forEach((section) => {
+      if (section.title === "Dashboard") {
+        section.subItems.forEach((item) => {
+          if (pathname.includes(item.toLowerCase().replace(/\s+/g, "-"))) {
+            newExpandedSection.Dashboard = true;
+          }
+        });
+      } else if (section.title === "Tools") {
+        section.subItems.forEach((tool) => {
+          if (tool.subTools) {
+            tool.subTools.forEach((subTool) => {
+              if (
+                pathname.includes(subTool.toLowerCase().replace(/\s+/g, "-"))
+              ) {
+                newExpandedSection.Tools = true;
+                toolToSelect = tool.name;
+              }
+            });
+          }
+        });
+      }
+    });
+
+    setExpandedSection(newExpandedSection);
+    setSelectedTool(toolToSelect);
+  }, [pathname]);
 
   const toggleSection = (title) => {
     setExpandedSection((prev) => ({
@@ -55,6 +90,7 @@ const Sidebar = () => {
               selectedTool={selectedTool}
               onToggleSection={toggleSection}
               onToggleTool={toggleToolExpansion}
+              currentPath={pathname}
             />
           </div>
         </div>
@@ -68,6 +104,7 @@ const Sidebar = () => {
           selectedTool={selectedTool}
           onToggleSection={toggleSection}
           onToggleTool={toggleToolExpansion}
+          currentPath={pathname}
         />
       </div>
     </>

@@ -1,6 +1,6 @@
-import Navbar from "../components/reels/Navbar";
-import Sidebar from "../components/Sidebar";
-import ReelGenerator from "../components/pages/ReelGenerator";
+import Navbar from "../../../components/reels/Navbar";
+import Sidebar from "../../../components/Sidebar";
+import ReelGenerator from "../../../components/pages/ReelGenerator";
 
 export default function Home() {
   return (

@@ -1,7 +1,18 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 
-const ToolItem = ({ tool, isExpanded, onToggle }) => {
+const ToolItem = ({ tool, isExpanded, onToggle, currentPath }) => {
+  const router = useRouter();
+
+  const handleSubToolClick = (subTool) => {
+    // Convert subTool to a route-friendly format
+    const routePath = `/${tool.name.toLowerCase()}/${subTool
+      .toLowerCase()
+      .replace(/\s+/g, "-")}`;
+    router.push(routePath);
+  };
+
   return (
     <div className="mb-2">
       <div
@@ -22,7 +33,12 @@ const ToolItem = ({ tool, isExpanded, onToggle }) => {
           {tool.subTools.map((subTool, subToolIndex) => (
             <div
               key={subToolIndex}
-              className="text-gray-600 hover:bg-gray-50 p-1 rounded"
+              onClick={() => handleSubToolClick(subTool)}
+              className={`text-gray-600 hover:bg-gray-50 p-1 rounded cursor-pointer ${
+                currentPath.includes(subTool.toLowerCase().replace(/\s+/g, "-"))
+                  ? "bg-blue-100 font-semibold"
+                  : ""
+              }`}
             >
               {subTool}
             </div>

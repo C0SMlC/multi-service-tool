@@ -1,5 +1,4 @@
 import React from "react";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import SidebarSection from "./SidebarSection";
 
 const SidebarContent = ({
@@ -8,6 +7,7 @@ const SidebarContent = ({
   selectedTool,
   onToggleSection,
   onToggleTool,
+  currentPath,
 }) => {
   return (
     <div className="p-4 text-black">
@@ -19,6 +19,7 @@ const SidebarContent = ({
           selectedTool={selectedTool}
           onToggleSection={() => onToggleSection(section.title)}
           onToggleTool={onToggleTool}
+          currentPath={currentPath}
         />
       ))}
     </div>

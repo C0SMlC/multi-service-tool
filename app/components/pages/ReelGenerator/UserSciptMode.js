@@ -37,7 +37,7 @@ export const UserScriptMode = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6 mb-10">
       {/* Large Text Area */}
       <div>
         <label className="block mb-2 font-semibold">Enter or Paste Text</label>
