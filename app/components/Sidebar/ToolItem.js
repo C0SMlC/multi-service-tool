@@ -7,7 +7,7 @@ const ToolItem = ({ tool, isExpanded, onToggle, currentPath }) => {
 
   const handleSubToolClick = (subTool) => {
     // Convert subTool to a route-friendly format
-    const routePath = `/${tool.name.toLowerCase()}/${subTool
+    const routePath = `/tools/${tool.name.toLowerCase()}/${subTool
       .toLowerCase()
       .replace(/\s+/g, "-")}`;
     router.push(routePath);
@@ -19,7 +19,7 @@ const ToolItem = ({ tool, isExpanded, onToggle, currentPath }) => {
         className="flex justify-between items-center cursor-pointer hover:bg-gray-100 p-2 rounded transition-colors"
         onClick={onToggle}
       >
-        <span>{tool.name}</span>
+        <span>{tool.name.charAt(0).toUpperCase() + tool.name.slice(1)}</span>
         {isExpanded ? (
           <KeyboardArrowUp className="text-sm text-gray-600" />
         ) : (
@@ -40,7 +40,7 @@ const ToolItem = ({ tool, isExpanded, onToggle, currentPath }) => {
                   : ""
               }`}
             >
-              {subTool}
+              {subTool.charAt(0).toUpperCase() + subTool.slice(1)}
             </div>
           ))}
         </div>

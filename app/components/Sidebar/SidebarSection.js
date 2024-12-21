@@ -26,7 +26,9 @@ const SidebarSection = ({
         className="flex justify-between items-center cursor-pointer p-2 hover:bg-gray-300 rounded transition-colors"
         onClick={onToggleSection}
       >
-        <h3 className="font-medium text-lg">{section.title}</h3>
+        <h3 className="font-medium text-lg">
+          {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
+        </h3>
         {isExpanded ? (
           <KeyboardArrowUp className="text-gray-600" />
         ) : (
