@@ -17,7 +17,6 @@ export const CustomDropdown = ({
   const [playingAudio, setPlayingAudio] = useState(null);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -32,19 +31,15 @@ export const CustomDropdown = ({
     };
   }, []);
 
-  // Find selected item
   const selectedItemData = items.find((item) => item.value === selectedItem);
 
-  // Toggle dropdown
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  // Handle item selection
   const handleSelect = (item) => {
     onSelect(item.value);
     setIsOpen(false);
   };
 
-  // Default item rendering
   const defaultRenderItem = (item) => (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center space-x-2">
@@ -53,16 +48,10 @@ export const CustomDropdown = ({
       </div>
 
       <div className="flex items-center space-x-2">
-        {item.actionIcon && item.onActionClick && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              item.onActionClick();
-            }}
-            className="text-gray-500 hover:text-blue-600 transition"
-          >
+        {item.actionIcon && (
+          <span className="text-gray-500 hover:text-blue-600 transition">
             {item.actionIcon}
-          </button>
+          </span>
         )}
         {item.description && (
           <button
@@ -72,11 +61,8 @@ export const CustomDropdown = ({
                 activeDescription === item.value ? null : item.value
               );
             }}
-            onMouseEnter={() =>
-              setActiveDescription(
-                activeDescription === item.value ? null : item.value
-              )
-            }
+            onMouseEnter={() => setActiveDescription(item.value)}
+            onMouseLeave={() => setActiveDescription(null)}
             className="text-gray-500 hover:text-blue-600 transition group relative"
           >
             <Info size={16} />
@@ -88,7 +74,6 @@ export const CustomDropdown = ({
 
   return (
     <div ref={dropdownRef} className={`relative w-full ${className}`}>
-      {/* Dropdown Trigger */}
       <div
         onClick={toggleDropdown}
         className="w-full p-2 border rounded flex justify-between items-center cursor-pointer 
@@ -108,7 +93,6 @@ export const CustomDropdown = ({
         />
       </div>
 
-      {/* Dropdown Content */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -138,7 +122,6 @@ export const CustomDropdown = ({
                   {renderItem ? renderItem(item) : defaultRenderItem(item)}
                 </div>
 
-                {/* Detailed Description */}
                 {activeDescription === item.value && item.description && (
                   <div
                     className="absolute z-20 bottom-full left-1/2 transform -translate-x-1/2 mb-2 

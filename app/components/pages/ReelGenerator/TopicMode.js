@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import CustomDropdown from "../../elements/Dropdown";
-import { VoicePlayer } from "./VoicePlayer";
+import React, { useState } from "react";
+import CustomDropdown from "../../Elements/Dropdown";
+import AnimatedSubmitButton from "../../Elements/SubmitButton";
 
 export const TopicMode = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [textInput, setTextInput] = useState("");
   const [selectedAudio, setSelectedAudio] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  // In TopicMode.js
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Simply return the promise for the animation component to handle
+    return new Promise((resolve) => setTimeout(resolve, 2000));
+  };
 
   const options = [
     {
@@ -26,16 +34,6 @@ export const TopicMode = () => {
       value: "Option 3",
     },
   ];
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Submit logic
-    console.log({
-      option: selectedOption,
-      text: textInput,
-      audio: selectedAudio,
-    });
-  };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -61,32 +59,11 @@ export const TopicMode = () => {
           className="w-full p-2 border bg-lightGrey"
         />
       </div>
-
-      {/* Audio Dropdown with Player */}
-      {/* <div>
-        <label className="block mb-2 font-semibold">Select Audio</label>
-        <select
-          value={selectedAudio}
-          onChange={(e) => setSelectedAudio(e.target.value)}
-          className="w-full p-2 border rounded mb-2"
-        >
-          <option value="">Select an Audio File</option>
-          {audioFiles.map((audio) => (
-            <option key={audio.name} value={audio.src}>
-              {audio.name}
-            </option>
-          ))}
-        </select>
-        {selectedAudio && <VoicePlayer audioSrc={selectedAudio} />}
-      </div> */}
-
-      {/* Submit Button */}
-      <button
-        type="submit"
-        className=" bg-grey text-white px-12 py-2 rounded-3xl hover:bg-primary justify-self-center self-center"
-      >
-        Submit
-      </button>
+      <AnimatedSubmitButton
+        onSubmit={handleSubmit}
+        isProcessing={isProcessing}
+        setIsProcessing={setIsProcessing}
+      />
     </form>
   );
 };

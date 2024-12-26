@@ -62,3 +62,60 @@ body {
 .z-100 {
   z-index: 100;
 }
+
+.relative-container {
+  position: relative;
+  width: 100%;
+  padding-top: 177.78%; /* This is for 9:16 (16/9 * 100) */
+  background-color: black; /* For a clean black backdrop */
+}
+
+.video-wrapper {
+  position: absolute;
+  top: 38%; /* Default for 2xl screens */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto; /* Maintain original aspect ratio */
+  height: auto; /* Maintain original aspect ratio */
+  max-width: 100%; /* Ensure it doesn't exceed the container's width */
+  max-height: 100%; /* Ensure it doesn't exceed the container's height */
+  background-color: black; /* To ensure the black background */
+}
+
+/* For smaller screens */
+@media (max-width: 1536px) {
+  /* xl screens */
+  .video-wrapper {
+    top: 40%;
+  }
+}
+
+@media (max-width: 1280px) {
+  /* lg screens */
+  .video-wrapper {
+    top: 31%;
+    width: 56%;
+    height: 80%;
+  }
+}
+
+@media (max-width: 1024px) {
+  /* md screens */
+  .video-wrapper {
+    top: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  /* sm screens */
+  .video-wrapper {
+    top: 48%;
+  }
+}
+
+@media (max-width: 640px) {
+  /* xs screens */
+  .video-wrapper {
+    top: 50%;
+  }
+}
