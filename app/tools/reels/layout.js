@@ -1,8 +1,8 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "../../components/Navbar/Navbar";
-import Sidebar from "../../components/Sidebar";
-import { SidebarProvider } from "../../context/SidebarContext";
+import Navbar from "@/components/Navbar/Navbar";
+import Sidebar from "@/components/Sidebar";
+import { SidebarProvider } from "@/context/SidebarContext";
 import { usePathname } from "next/navigation";
 
 export default function ReelsLayout({ children }) {

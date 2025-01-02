@@ -58,8 +58,7 @@ const ReelModal = ({ reel, onClose }) => {
       }
     };
   }, []);
-  reel.videoUrl =
-    "https://v.ftcdn.net/10/91/58/80/700_F_1091588034_fF2wCYEZF1sKMu63DXG1D82PCgavQ4L4_ST.mp4";
+  reel.videoUrl = "/Before.mp4";
 
   return (
     <div

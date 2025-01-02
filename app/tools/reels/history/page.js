@@ -1,4 +1,4 @@
-import ReelsHistoryGrid from "@/app/components/pages/ReelHistory";
+import ReelsHistoryGrid from "@/components/pages/ReelHistory";
 import React from "react";
 export default function HistoryPage() {
   const sampleReels = [
