@@ -2,10 +2,22 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Menu, Close } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+// import { handleLogout } from "@/utils/LogOut";
 
 const Navbar = () => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navButtonClicked, setNavButtonClicked] = useState(false);
+
+  const onLogout = async () => {
+    const { success, error } = await handleLogout();
+    if (success) {
+      router.push("/auth/signin");
+    } else {
+      console.error("Logout failed:", error);
+    }
+  };
 
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
@@ -54,7 +66,7 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Navigation */}
-      <div className="hidden md:flex justify-between gap-x-14 text-black">
+      <div className="hidden md:flex justify-between gap-x-14 text-black items-center content-center cursor-pointer">
         <a href="#" className="hover:text-gray-200">
           Nav Item 1
         </a>
@@ -64,8 +76,11 @@ const Navbar = () => {
         <a href="#" className="hover:text-gray-200">
           Nav Item 3
         </a>
-        <a href="#" className="hover:text-gray-200">
-          Nav Item 4
+        <a
+          onClick={onLogout}
+          className="ml-4 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md"
+        >
+          Logout
         </a>
       </div>
 

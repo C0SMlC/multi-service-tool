@@ -11,6 +11,7 @@ import {
 import { CustomDropdown } from "../Elements/Dropdown";
 import { SubtitleControls } from "../Elements/SubtitleController";
 import { VideoPlayer } from "../Elements/VideoPlayer";
+import { WebAudioVideoProcessor } from "@/utils/VideoAudioProcessor";
 
 const ReelModal = ({ reel, onClose }) => {
   const [showSubtitles, setShowSubtitles] = useState(false);
@@ -18,7 +19,77 @@ const ReelModal = ({ reel, onClose }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [showControls, setShowControls] = useState(false);
   const [currentAudio, setCurrentAudio] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState(null);
+  const processorRef = useRef(null);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    processorRef.current = new WebAudioVideoProcessor();
+
+    return () => {
+      if (downloadUrl) {
+        URL.revokeObjectURL(downloadUrl);
+      }
+    };
+  }, []);
+
+  const handleDownload = async () => {
+    if (!currentAudio) {
+      // If no audio selected, download original video
+      const link = document.createElement("a");
+      link.href = reel.videoUrl;
+      link.download = `${reel.title || "video"}.mp4`;
+      link.click();
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+
+      const processedVideoUrl =
+        await processorRef.current.combineVideoWithAudio(
+          reel.videoUrl,
+          currentAudio
+        );
+
+      setDownloadUrl(processedVideoUrl);
+
+      // Create and trigger download
+      const link = document.createElement("a");
+      link.href = processedVideoUrl;
+      link.download = `${reel.title || "video"}_with_music.webm`;
+      link.click();
+    } catch (error) {
+      console.error("Error processing video:", error);
+      // Handle error appropriately
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Replace the existing download button with this JSX
+  const DownloadButton = (
+    <button
+      className={`w-full py-3 ${
+        isProcessing ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+      } text-white rounded-lg flex items-center justify-center gap-2`}
+      onClick={handleDownload}
+      disabled={isProcessing}
+    >
+      {isProcessing ? (
+        <>
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+          Processing...
+        </>
+      ) : (
+        <>
+          <Download className="w-5 h-5" />
+          Download {currentAudio ? "with Music" : ""}
+        </>
+      )}
+    </button>
+  );
 
   // Sample background music options
   const backgroundMusic = [
@@ -58,7 +129,6 @@ const ReelModal = ({ reel, onClose }) => {
       }
     };
   }, []);
-  reel.videoUrl = "/Before.mp4";
 
   return (
     <div
@@ -135,21 +205,13 @@ const ReelModal = ({ reel, onClose }) => {
                   )}
                 />
               </div>
-
               <SubtitleControls
                 showSubtitles={showSubtitles}
                 onToggleSubtitles={() => setShowSubtitles(!showSubtitles)}
                 subtitleStyle={subtitleStyle}
                 onStyleChange={setSubtitleStyle}
               />
-
-              <button
-                className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
-                onClick={() => {}}
-              >
-                <Download className="w-5 h-5" />
-                Download
-              </button>
+              {DownloadButton}
             </div>
           </div>
 
@@ -218,13 +280,7 @@ const ReelModal = ({ reel, onClose }) => {
                       onStyleChange={setSubtitleStyle}
                     />
 
-                    <button
-                      className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
-                      onClick={() => {}}
-                    >
-                      <Download className="w-5 h-5" />
-                      Download
-                    </button>
+                    {DownloadButton}
                   </div>
                 </div>
               </motion.div>

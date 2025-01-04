@@ -5,16 +5,20 @@ export default function HistoryPage() {
     {
       id: 1,
       title: "Ocean is beautiful",
-      thumbnail:
-        "https://images.pexels.com/photos/29699865/pexels-photo-29699865/free-photo-of-surfer-headed-to-ocean-at-santa-barbara-beach.jpeg",
+      // thumbnail:
+      // "https://images.pexels.com/photos/29699865/pexels-photo-29699865/free-photo-of-surfer-headed-to-ocean-at-santa-barbara-beach.jpeg",
       createdAt: "2024-03-20",
+      videoUrl:
+        "https://cdn.pixabay.com/video/2021/04/17/71350-538489808_large.mp4",
     },
     {
       id: 2,
       title: "Ocean is beautiful",
-      thumbnail:
-        "https://images.pexels.com/photos/29699865/pexels-photo-29699865/free-photo-of-surfer-headed-to-ocean-at-santa-barbara-beach.jpeg",
+      // thumbnail:
+      // "https://images.pexels.com/photos/29699865/pexels-photo-29699865/free-photo-of-surfer-headed-to-ocean-at-santa-barbara-beach.jpeg",
       createdAt: "2024-03-19",
+      videoUrl:
+        "https://cdn.pixabay.com/video/2021/04/17/71350-538489808_large.mp4",
     },
   ];
 
