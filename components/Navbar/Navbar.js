@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Menu, Close } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
-// import { handleLogout } from "@/utils/LogOut";
+import { handleLogout } from "@/utils/LogOut";
 
 const Navbar = () => {
   const router = useRouter();
@@ -13,7 +13,7 @@ const Navbar = () => {
   const onLogout = async () => {
     const { success, error } = await handleLogout();
     if (success) {
-      router.push("/auth/signin");
+      // router.redirect("/auth/signin");
     } else {
       console.error("Logout failed:", error);
     }

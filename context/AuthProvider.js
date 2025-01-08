@@ -11,6 +11,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("Auth state changed:", user?.email); // Log auth changes
       setUser(user);
       setLoading(false);
     });
@@ -18,14 +19,15 @@ export function AuthProvider({ children }) {
     return () => unsubscribe();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        Loading...
-      </div>
-    );
-  }
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    console.log("Auth state changed:", user?.email); // Log auth changes
+    setUser(user);
+    setLoading(false);
+  });
 
+  unsubscribe();
+
+  console.log("AuthProvider current user:", user?.email); // Log current user state
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );

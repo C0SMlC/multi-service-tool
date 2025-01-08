@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { AuthProvider } from "@/context/AuthProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,9 +25,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* <ProtectedRoute> */}
-        {children}
-        {/* </ProtectedRoute> */}
+        <AuthProvider>
+          <ProtectedRoute>{children}</ProtectedRoute>
+        </AuthProvider>
       </body>
     </html>
   );

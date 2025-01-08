@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Volume2,
@@ -43,13 +43,14 @@ const LoadingTimer = ({ startTime }) => {
   );
 };
 
-const ReelModal = ({ reel, onClose }) => {
+const TopicModeModal = ({ onClose, isLoading = true, videoUrl = null }) => {
   const [showSubtitles, setShowSubtitles] = useState(false);
   const [subtitleStyle, setSubtitleStyle] = useState("Default");
   const [isMuted, setIsMuted] = useState(false);
   const [showControls, setShowControls] = useState(false);
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [loadingStartTime] = useState(Date.now());
   const [downloadUrl, setDownloadUrl] = useState(null);
   const processorRef = useRef(null);
   const audioRef = useRef(null);
@@ -68,8 +69,8 @@ const ReelModal = ({ reel, onClose }) => {
     if (!currentAudio) {
       // If no audio selected, download original video
       const link = document.createElement("a");
-      link.href = reel.videoUrl;
-      link.download = `${reel.title || "video"}.mp4`;
+      link.href = videoUrl;
+      link.download = "processed-video.mp4";
       link.click();
       return;
     }
@@ -79,7 +80,7 @@ const ReelModal = ({ reel, onClose }) => {
 
       const processedVideoUrl =
         await processorRef.current.combineVideoWithAudio(
-          reel.videoUrl,
+          videoUrl,
           currentAudio
         );
 
@@ -88,17 +89,15 @@ const ReelModal = ({ reel, onClose }) => {
       // Create and trigger download
       const link = document.createElement("a");
       link.href = processedVideoUrl;
-      link.download = `${reel.title || "video"}_with_music.webm`;
+      link.download = "processed-video-with-music.webm";
       link.click();
     } catch (error) {
       console.error("Error processing video:", error);
-      // Handle error appropriately
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Replace the existing download button with this JSX
   const DownloadButton = (
     <button
       className={`w-full py-3 ${
@@ -121,7 +120,6 @@ const ReelModal = ({ reel, onClose }) => {
     </button>
   );
 
-  // Sample background music options
   const backgroundMusic = [
     {
       value: "happy",
@@ -160,8 +158,6 @@ const ReelModal = ({ reel, onClose }) => {
     };
   }, []);
 
-  reel.videoUrl = "./Before.mp4";
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm text-black"
@@ -196,7 +192,7 @@ const ReelModal = ({ reel, onClose }) => {
 
           <div className="hidden md:block md:col-span-2 p-6 space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">{reel.title}</h2>
+              <h2 className="text-2xl font-semibold">Generated Video</h2>
               <button
                 onClick={onClose}
                 className="text-gray-500 hover:text-gray-700"
@@ -241,12 +237,14 @@ const ReelModal = ({ reel, onClose }) => {
                   )}
                 />
               </div>
+
               <SubtitleControls
                 showSubtitles={showSubtitles}
                 onToggleSubtitles={() => setShowSubtitles(!showSubtitles)}
                 subtitleStyle={subtitleStyle}
                 onStyleChange={setSubtitleStyle}
               />
+
               {DownloadButton}
             </div>
           </div>
@@ -261,7 +259,7 @@ const ReelModal = ({ reel, onClose }) => {
               >
                 <div className="p-6 space-y-6">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-semibold">{reel.title}</h2>
+                    <h2 className="text-2xl font-semibold">Generated Video</h2>
                     <button
                       onClick={() => setShowControls(false)}
                       className="text-gray-500 hover:text-gray-700"
@@ -330,4 +328,4 @@ const ReelModal = ({ reel, onClose }) => {
   );
 };
 
-export default ReelModal;
+export default TopicModeModal;

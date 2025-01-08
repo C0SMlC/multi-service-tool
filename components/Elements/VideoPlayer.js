@@ -89,6 +89,8 @@ export const VideoPlayer = ({ videoUrl, isMuted, showSubtitles }) => {
     return null;
   }
 
+  videoUrl = "./public/Before.mp4";
+
   return (
     <div className="w-full h-full flex items-center justify-center bg-black">
       <div

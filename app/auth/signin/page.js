@@ -5,14 +5,16 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  sendEmailVerification,
 } from "firebase/auth";
-// import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/Firebase";
 import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
@@ -20,34 +22,65 @@ export default function AuthPage() {
   const handleEmailAuth = async (e) => {
     e.preventDefault();
     setError("");
-
-    if (isSignUp && password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
+    setMessage("");
 
     try {
       if (isSignUp) {
-        await createUserWithEmailAndPassword(auth, email, password);
+        // Check if passwords match for signup
+        if (password !== confirmPassword) {
+          setError("Passwords do not match");
+          return;
+        }
+
+        // Create new user
+        const result = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        console.log("Signup successful:", result.user.email);
+
+        // Send verification email
+        await sendEmailVerification(result.user);
+        setMessage(
+          "Verification email sent! Please check your inbox and verify your email before signing in."
+        );
+
+        // Clear form
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setIsSignUp(false);
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        // Sign in
+        const result = await signInWithEmailAndPassword(auth, email, password);
+
+        // Check if email is verified
+        if (!result.user.emailVerified) {
+          setError(
+            "Please verify your email before signing in. Check your inbox for the verification link."
+          );
+          // Option to resend verification email
+          await sendEmailVerification(result.user);
+          setMessage("A new verification email has been sent.");
+          return;
+        }
+
+        console.log("Signin successful:", result.user.email);
+        router.push("/tools/reels/generate");
       }
-      router.push("/dashboard");
     } catch (error) {
-      console.error(error);
-      setError(
-        isSignUp
-          ? "Failed to create account. Please try again."
-          : "Failed to sign in. Please check your credentials."
-      );
+      console.error("Auth error:", error.message);
+      // setError(error.message);
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      router.push("/dashboard");
+      const result = await signInWithPopup(auth, provider);
+      console.log("Google signin successful:", result.user.email);
+      router.push("/tools/reels/generate");
     } catch (error) {
       setError("Failed to sign in with Google");
       console.error(error);
@@ -57,6 +90,7 @@ export default function AuthPage() {
   const toggleAuthMode = () => {
     setIsSignUp(!isSignUp);
     setError("");
+    setMessage("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
@@ -91,6 +125,9 @@ export default function AuthPage() {
 
         <form onSubmit={handleEmailAuth} className="mt-8 space-y-6">
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {message && (
+            <p className="text-green-500 text-sm text-center">{message}</p>
+          )}
 
           <div>
             <label
