@@ -12,6 +12,7 @@ import { CustomDropdown } from "../Elements/Dropdown";
 import { SubtitleControls } from "../Elements/SubtitleController";
 import { VideoPlayer } from "../Elements/VideoPlayer";
 import { WebAudioVideoProcessor } from "@/utils/VideoAudioProcessor";
+import AddToYouTubeButton from "../Elements/ActionButton";
 
 const LoadingTimer = ({ startTime }) => {
   const [timeElapsed, setTimeElapsed] = useState(0);
@@ -244,8 +245,10 @@ const TopicModeModal = ({ onClose, isLoading = true, videoUrl = null }) => {
                 subtitleStyle={subtitleStyle}
                 onStyleChange={setSubtitleStyle}
               />
-
-              {DownloadButton}
+              <div className="flex flex-col gap-6">
+                {DownloadButton}
+                {<AddToYouTubeButton />}
+              </div>
             </div>
           </div>
 
