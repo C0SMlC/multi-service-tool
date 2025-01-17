@@ -8,6 +8,7 @@ export default function VideoDetail({ videoId }) {
   const mockVideoDetail = {
     id: videoId,
     title: "Offensive Investing: How to Make Money Fast with Self-Education",
+    url: "./Before.mp4",
     duration: "01:50",
     viralityScore: 85,
     analysis:
@@ -81,6 +82,7 @@ export default function VideoDetail({ videoId }) {
         <TopicModeModal
           isOpen={showTopicModal}
           onClose={() => setShowTopicModal(false)}
+          videoUrl={mockVideoDetail.url}
         />
       )}
     </div>
